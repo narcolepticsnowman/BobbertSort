@@ -10,7 +10,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        BobbertSort rs = new BobbertSort(" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+        BobbertSort rs = new BobbertSort();
         List<String> data = new ArrayList<>(List.of(Main.data.split(" ")));
         for (int i = 0; i < 16; i++) {
             data.addAll(data);
@@ -31,6 +31,10 @@ public class Main {
         System.out.println("Collection sort time: " + (collectionSortTime));
 
         assert rankSortedResult.size() == data.size();
-        assert rankSortedResult.equals(data);
+        for (int i = 0; i < rankSortedResult.size(); i++) {
+            if (!rankSortedResult.get(i).equals(data.get(i))) {
+                throw new RuntimeException("list not sorted!");
+            }
+        }
     }
 }

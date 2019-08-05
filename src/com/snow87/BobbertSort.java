@@ -12,7 +12,7 @@ public class BobbertSort {
         int current = 0;
 
         Node() {
-            children = new Node[unknownCharRank + 1];
+            children = new Node[95];
         }
 
         List<Object> takeValues() {
@@ -40,15 +40,7 @@ public class BobbertSort {
         }
     }
 
-    private Map<Character, Integer> characterRank;
-    private int unknownCharRank;
 
-    public BobbertSort(String rankString) {
-        char[] chars = rankString.toCharArray();
-        characterRank = IntStream.range(0, chars.length).boxed()
-                .collect(Collectors.toMap(i -> chars[i], i -> i));
-        unknownCharRank = rankString.length();
-    }
 
     private List<Object> flatten(Node node, int numberOfValues) {
         Deque<Node> stack = new LinkedList<>();
@@ -73,7 +65,7 @@ public class BobbertSort {
         for (String s : strings) {
             Node current = buckets;
             for (int i = 0; i < s.length(); i++) {
-                int r = Optional.ofNullable(characterRank.get(s.charAt(i))).orElse(unknownCharRank);
+                int r = ((int) s.charAt(i)) - 32;
                 if (current.children[r] == null) {
                     current.children[r] = new Node();
                     current = current.children[r];
