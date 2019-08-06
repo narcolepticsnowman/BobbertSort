@@ -1,80 +1,56 @@
 package com.snow87;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BobbertSort {
 
-    private class Node {
-        Node[] children;
-        List<Object> values;
-        int current = 0;
+    private class DepthList {
+        List<String> list;
+        int depth;
 
-        Node() {
-            children = new Node[95];
-        }
-
-        List<Object> takeValues() {
-            List<Object> temp = values;
-            values = null;
-            return temp;
-        }
-
-        void addValue(Object value) {
-            if (values == null) values = new ArrayList<>();
-            values.add(value);
-        }
-
-        boolean hasNext() {
-            int i = current;
-            while (i < children.length && children[i] == null) {
-                i++;
-            }
-            current = i;
-            return i < children.length;
-        }
-
-        Node next() {
-            return hasNext() ? children[current++] : null;
+        DepthList(List<String> values, int depth) {
+            this.list = values;
+            this.depth = depth;
         }
     }
 
-
-
-    private List<Object> flatten(Node node, int numberOfValues) {
-        Deque<Node> stack = new LinkedList<>();
-        stack.push(node);
-        List<Object> result = new ArrayList<>(numberOfValues);
-
-        Node current;
+    List<String> sort(List<String> strings) {
+        if (strings == null || strings.isEmpty()) return strings;
+        List<String> results = new LinkedList<>();
+        Deque<DepthList> stack = new LinkedList<>();
+        stack.push(new DepthList(strings, 0));
+        long totalIterations = 0;
+        DepthList current;
         while (!stack.isEmpty()) {
+            List<String>[] buckets = new List[95];
             current = stack.pop();
-            if (current.values != null) result.addAll(current.takeValues());
-            if(current.hasNext()) {
-                stack.push(current);
-                stack.push(current.next());
-            }
-        }
-        return result;
-    }
+            if (current.list.size() == 1) {
+                results.add(current.list.get(0));
+            } else {
+                for(String s : current.list) {
+                    totalIterations++;
+                    if(current.depth == 0 && s== null){
+                        results.add(s);
+                    } else if (s != null && s.length() == current.depth) {
+                        results.add(s);
+                    } else if (s != null && s.length() > current.depth) {
+                        int currentChar = s.charAt(current.depth) - 32;
 
-    public List<String> sort(List<String> strings) {
-        Node buckets = new Node();
-
-        for (String s : strings) {
-            Node current = buckets;
-            for (int i = 0; i < s.length(); i++) {
-                int r = ((int) s.charAt(i)) - 32;
-                if (current.children[r] == null) {
-                    current.children[r] = new Node();
-                    current = current.children[r];
-                } else {
-                    current = current.children[r];
+                        if(buckets[currentChar] == null) buckets[currentChar] = new LinkedList<>();
+                        buckets[currentChar].add(s);
+                    }
+                }
+                for(int i=94; i>=0; i--){
+                    if(buckets[i] != null) stack.push(new DepthList(buckets[i], current.depth + 1));
                 }
             }
-            current.addValue(s);
+
         }
-        return (List) flatten(buckets, strings.size());
+
+        System.out.println(totalIterations);
+        return results;
+
     }
 }
