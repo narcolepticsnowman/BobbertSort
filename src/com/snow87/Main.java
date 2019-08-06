@@ -12,17 +12,22 @@ public class Main {
     public static void main(String[] args) {
         BobbertSort rs = new BobbertSort();
         List<String> data = new ArrayList<>(List.of(Main.data.split(" ")));
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 14; i++) {
             data.addAll(data);
         }
-
+        long totalChars = 0;
+        for(String s : data){
+            totalChars += s.length();
+        }
+        System.out.println("Total values: "+data.size());
+        System.out.println("Total chars:  "+totalChars);
         long rankSortTime = 0;
         List<String> rankSortedResult;
         long startTime = System.currentTimeMillis();
         rankSortedResult = rs.sort(data);
         rankSortTime += System.currentTimeMillis() - startTime;
 
-        System.out.println("Rank sort time: " + (rankSortTime));
+        System.out.println("Bobbert sort time: " + (rankSortTime));
 
         long collectionSortTime = 0;
         startTime = System.currentTimeMillis();
