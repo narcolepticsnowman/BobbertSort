@@ -4,7 +4,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BobbertSort {
+public class TrieRadixAsciiSort {
 
     private class DepthList {
         List<String> list;

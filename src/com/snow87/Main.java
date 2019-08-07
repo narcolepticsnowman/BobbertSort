@@ -10,7 +10,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        BobbertSort rs = new BobbertSort();
+        TrieRadixAsciiSort rs = new TrieRadixAsciiSort();
         List<String> data = new ArrayList<>(List.of(Main.data.split(" ")));
         for (int i = 0; i < 14; i++) {
             data.addAll(data);
@@ -27,7 +27,7 @@ public class Main {
         rankSortedResult = rs.sort(data);
         rankSortTime += System.currentTimeMillis() - startTime;
 
-        System.out.println("Bobbert sort time: " + (rankSortTime));
+        System.out.println("Trie Radix Sort time: " + (rankSortTime));
 
         long collectionSortTime = 0;
         startTime = System.currentTimeMillis();
